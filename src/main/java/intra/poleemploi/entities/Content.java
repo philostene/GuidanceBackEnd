@@ -24,10 +24,10 @@ public class Content implements Serializable{
     //  @Column(name="NbLectures")
     private int nbLectures;
     //private String description;
-    //private String icone;
-    //private String contentURL;
-    //private Date debut;
-    //private Date fin;
+    private String icone;
+    private String contentURL;
+    private Date debut;
+    private Date fin;
     @ManyToOne
     @JoinColumn(name = "id_appli", nullable = false)
     private Appli appli;

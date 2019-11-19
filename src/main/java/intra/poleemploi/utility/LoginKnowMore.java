@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class LoginKnowMore {
+public class LoginKnowMore {
 
     // http://pr051-gfpe-3upxjf0.sip91.pole-emploi.intra:22391/know/login.jsp    //prod
     // http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/index.jsp    //recette
@@ -28,14 +28,15 @@ class LoginKnowMore {
 //        return jsessionId;
 //    }
 
-    List<StatistiquesParJour> listStatistiquesParJour(List<Content> listContents){
-        List<StatistiquesParJour> listStatistiquesParJourReturned = new ArrayList<>();
-        String statisticPerDayBaseURL = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/view/statistics/publicationStatistics?pubId="; //535&fromDate=27%2f10%2f2019&toDate=18%2f11%2f2019"
-
-        return listStatistiquesParJourReturned;
+    public List<Appli> listAppli() throws IOException {
+        String url = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/servlet/LoginCheck";
+        ReadHtmlTable readHtmlTable = new ReadHtmlTable();
+        String response = httpPostListAppi(url);
+        return readHtmlTable.getAppliList(response);
     }
 
-    List<Content> listContents(List<Appli> listAppli) throws IOException {
+
+    public List<Content> listContents(List<Appli> listAppli) throws IOException {
 
         List<Content> listcontentToBeReturned = new ArrayList<>();
 
@@ -61,14 +62,12 @@ class LoginKnowMore {
         return listcontentToBeReturned;
     }
 
-    List<Appli> listAppli() throws IOException {
+    List<StatistiquesParJour> listStatistiquesParJour(List<Content> listContents){
+        List<StatistiquesParJour> listStatistiquesParJourReturned = new ArrayList<>();
+        String statisticPerDayBaseURL = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/view/statistics/publicationStatistics?pubId="; //535&fromDate=27%2f10%2f2019&toDate=18%2f11%2f2019"
 
-        String url = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/servlet/LoginCheck";
-        ReadHtmlTable readHtmlTable = new ReadHtmlTable();
-        String response = httpPostListAppi(url);
-        return readHtmlTable.getAppliList(response);
+        return listStatistiquesParJourReturned;
     }
-
 
     private String httpPostListAppi(String url) throws IOException {
 

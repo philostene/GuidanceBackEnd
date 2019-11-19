@@ -1,15 +1,10 @@
 package intra.poleemploi;//package intra.poleemploi.utility;
 
-import intra.poleemploi.dao.AppliRepository;
-import intra.poleemploi.dao.ContentRepository;
-import intra.poleemploi.dao.RoleAppRepository;
-import intra.poleemploi.dao.UserAppRepository;
-import intra.poleemploi.entities.Appli;
-import intra.poleemploi.entities.Content;
-import intra.poleemploi.entities.RoleApp;
-import intra.poleemploi.entities.UserApp;
+import intra.poleemploi.dao.*;
+import intra.poleemploi.entities.*;
 import intra.poleemploi.service.AuthService;
 import intra.poleemploi.service.WriteApplisIntoDataBase;
+import intra.poleemploi.utility.LoginKnowMore;
 import intra.poleemploi.utility.ReadExcel;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +15,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -28,7 +25,10 @@ import java.util.stream.Stream;
 class FillingDataBaseFromExcelFileMain {
 //    @Autowired
 //    private RepositoryRestConfiguration repositoryRestConfiguration;
-      private String option ="creation";
+       // Décommenter l'option désirée
+      //private String option = "WriteDataBaseFromExcel"; //write database from Excel
+        private String option  = "WriteDataBaseFromKM";  //Write database from KM
+      //private String option = "WriteExcelFromDataBase"; //Write Excel from database
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(FillingDataBaseFromExcelFileMain.class, args);
@@ -36,7 +36,7 @@ class FillingDataBaseFromExcelFileMain {
     }
 
     @Bean
-    CommandLineRunner startFillingDataBase(RepositoryRestConfiguration repositoryRestConfiguration, AppliRepository appliRepository, ContentRepository contentRepository, AuthService authService, UserAppRepository userAppRepository, RoleAppRepository roleAppRepository) {
+    CommandLineRunner startFillingDataBase(StatistiquesParJourRepository statistiquesParJourRepository, RepositoryRestConfiguration repositoryRestConfiguration, AppliRepository appliRepository, ContentRepository contentRepository, AuthService authService, UserAppRepository userAppRepository, RoleAppRepository roleAppRepository) {
         return args -> {
             //repositoryRestConfiguration.exposeIdsFor(Appli.class, Content.class, UserApp.class, RoleApp.class);
             userAppRepository.deleteAll();
@@ -44,6 +44,11 @@ class FillingDataBaseFromExcelFileMain {
             roleAppRepository.deleteAll();
             contentRepository.deleteAll();
             appliRepository.deleteAll();
+            statistiquesParJourRepository.deleteAll();
+
+
+            switch (option) {
+                case "WriteDataBaseFromExcel":
 
 //            List<Appli> listAppli;
             ReadExcel readExcel = new ReadExcel();
@@ -75,6 +80,43 @@ class FillingDataBaseFromExcelFileMain {
 //                statistiquesParJourRepository.save(tempStempStatistiquesParJour);
 //            }
 //            statistiquesParJourRepository.findAll().forEach(System.out::println);
+                    break;
+                case "WriteDataBaseFromKM" :
+                    List<Appli> listAppli;
+                    LoginKnowMore loginKnowMore = new LoginKnowMore();
+
+                    listAppli = loginKnowMore.listAppli();                             //readHtmlTable.getAppliList();
+                    for (Appli tempAppli : listAppli) {
+                        appliRepository.save(tempAppli);
+                    }
+                    appliRepository.findAll().forEach(System.out::println);
+                    // Table Content filling
+                    contentRepository.deleteAll();
+
+                    List<Content> listContents;
+
+                    //  listContent = readHtmlTable.getContentList(appliRepository.findAll());
+                    listContents = loginKnowMore.listContents(listAppli);
+
+                    for (Content tempContent : listContents) {
+                        try {
+                            contentRepository.save(tempContent);
+                        }
+                        catch (Exception e) {System.out.println("error FillingDataBaseMainMenuFromKM "+ e.getMessage() + Arrays.toString(e.getStackTrace()));}
+                    }
+                    contentRepository.findAll().forEach(System.out::println);
+
+                    // Table statistique par jour filling
+
+                    List<StatistiquesParJour> listStatistiquesParJour = new ArrayList<>();
+                    //      listStatistiquesParJour = loginKnowMore.getStatistiquesParJourList(contentRepository.findAll());
+                    for (StatistiquesParJour tempStempStatistiquesParJour : listStatistiquesParJour) {
+                        statistiquesParJourRepository.save(tempStempStatistiquesParJour);
+                    }
+                    statistiquesParJourRepository.findAll().forEach(System.out::println);
+                    break;
+
+            }
 //
             // AUTHENTICATION
             // ajout de 2 roles

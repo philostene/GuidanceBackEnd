@@ -1,5 +1,8 @@
 package intra.poleemploi.utility;
 
+import intra.poleemploi.Consts.Consts;
+
+import intra.poleemploi.Consts.ErrorMessage;
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.Content;
 import org.jsoup.Jsoup;
@@ -26,23 +29,22 @@ class ReadHtmlTable {
             Element row = rows.get(i);
             Elements cols = row.select("td");
             Attributes href = row.attributes();
-            String urlAppliNonFiltrered = href.get("onclick");
-  //          pos = urlAppliNonFiltrered.indexOf("applicationId=");
+            String urlAppliNonFiltrered = href.get(Consts.ONCLICK);
+  //          pos = urlAppliNonFiltrered.indexOf(Consts.APPLICATIONID);
             String urlAppli = urlAppliNonFiltrered.substring(16, urlAppliNonFiltrered.length() - 1);
-            pos = urlAppli.indexOf("applicationId=");
+            pos = urlAppli.indexOf(Consts.APPLICATIONID);
             String idApplication = urlAppli.substring(pos + 14);
            // urlAppli = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/"+urlAppli;
-            urlAppli = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/admin/statistic/?applicationId="+idApplication;
+            urlAppli = Consts.URLBASEFORCONTENTSDETAILS+idApplication;
             Appli appli = new Appli();
             appli.setIdAppliKM(idApplication);
             appli.setAppliName(cols.get(0).text());
-            appli.setAppliURL(urlAppli);
+            appli.setAppliURL(urlAppli); //Url content
             //System.out.println("col1 " + cols.get(0).text() + " col2 " + cols.get(1).text() + " idApplication " + idApplication);
             listAppli.add(appli);
         }
         return listAppli;
     }
-
     List<Content> getContentsList(String html, Appli appli) {
       //  LoginKnowMore loginKnowMore = new LoginKnowMore();
         List<Content> listContent = new ArrayList<>();
@@ -59,16 +61,17 @@ class ReadHtmlTable {
             Element row = rows.get(i);
             Elements cols = row.select("td");
             Attributes onClick = row.attributes();
-            String urlNonFiltrered = onClick.get("onclick");
-
-            int posLocationHref = urlNonFiltrered.indexOf("location.href="); //recherche y compris le guillement
+            String urlNonFiltrered = onClick.get(Consts.ONCLICK);
+            int posLocationHref = urlNonFiltrered.indexOf(Consts.PUBLICATIONHREF); //recherche y compris le guillement
             Content content = new Content();
             if (posLocationHref != -1) {
                 String url = urlNonFiltrered.substring(posLocationHref + "location.href=\'".length(), urlNonFiltrered.length() - 1);
 
-                int posPubId = url.indexOf("pubId=");
+                int posPubId = url.indexOf(Consts.PUBID);
                 int posAmpersand = url.indexOf("&");
-                String idContent = url.substring(posPubId + "pubId=".length(), posAmpersand);
+                String idContent = url.substring(posPubId + Consts.PUBID.length(), posAmpersand);
+                url = Consts.URLBASEFORSTATISTICSDETAILS +idContent+"&fromDate=28%2f10%2f2019&toDate=19%2f11%2f2019";
+                content.setContentURL(url);
             }
 
             content.setIdContentKM(cols.get(0).text());
@@ -92,7 +95,7 @@ class ReadHtmlTable {
 
         }
         catch (IndexOutOfBoundsException e ) {
-            System.out.println("ReadHtmlTable.getContentsList error "+ e.getMessage()
+            System.out.println(ErrorMessage.READHTMLTABLERRORONGETCONTENTSLIST + e.getMessage()
             + " index i =  " + index + " appli " + appli.getIdAppliKM() );
             return null;
         }
