@@ -81,6 +81,7 @@ public class ReadExcel {
             if (row.getRowNum() > 0) {
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
+
                     switch (cell.getColumnIndex()) {
                         case 0:
                         //    content.setContentId((int) cell.getNumericCellValue());
@@ -89,13 +90,19 @@ public class ReadExcel {
                             content.setContentName(cell.getStringCellValue());
                             break;
                         case 2:
-                            content.setPublished(Boolean.parseBoolean(cell.getStringCellValue()));
+                            try {
+                                content.setPublished(Boolean.parseBoolean(cell.getStringCellValue()));
+                            }
+                            catch (IllegalStateException e) {System.out.println("error" + content.getContentName() + " error " + e.getMessage());}
                             break;
                         case 3:
                       //      content.setDescription(cell.getStringCellValue());
                             break;
                         case 4:
-                            content.setNbLectures((int) cell.getNumericCellValue());
+                            try {
+                                content.setNbLectures((int) cell.getNumericCellValue());
+                            }
+                             catch (IllegalStateException e) {System.out.println("error" + content.getContentName() + " error " + e.getMessage());}
                             break;
                         case 5:
                             content.setNbAffichages((int) cell.getNumericCellValue());

@@ -2,6 +2,7 @@ package intra.poleemploi.utility;
 
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.Content;
+import intra.poleemploi.entities.StatistiquesParJour;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +28,12 @@ class LoginKnowMore {
 //        return jsessionId;
 //    }
 
+    List<StatistiquesParJour> listStatistiquesParJour(List<Content> listContents){
+        List<StatistiquesParJour> listStatistiquesParJourReturned = new ArrayList<>();
+        String statisticPerDayBaseURL = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/view/statistics/publicationStatistics?pubId="; //535&fromDate=27%2f10%2f2019&toDate=18%2f11%2f2019"
+
+        return listStatistiquesParJourReturned;
+    }
 
     List<Content> listContents(List<Appli> listAppli) throws IOException {
 

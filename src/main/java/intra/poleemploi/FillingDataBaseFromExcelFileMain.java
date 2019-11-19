@@ -9,12 +9,14 @@ import intra.poleemploi.entities.Content;
 import intra.poleemploi.entities.RoleApp;
 import intra.poleemploi.entities.UserApp;
 import intra.poleemploi.service.AuthService;
+import intra.poleemploi.service.WriteApplisIntoDataBase;
 import intra.poleemploi.utility.ReadExcel;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -26,6 +28,7 @@ import java.util.stream.Stream;
 class FillingDataBaseFromExcelFileMain {
 //    @Autowired
 //    private RepositoryRestConfiguration repositoryRestConfiguration;
+      private String option ="creation";
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(FillingDataBaseFromExcelFileMain.class, args);
@@ -35,26 +38,32 @@ class FillingDataBaseFromExcelFileMain {
     @Bean
     CommandLineRunner startFillingDataBase(RepositoryRestConfiguration repositoryRestConfiguration, AppliRepository appliRepository, ContentRepository contentRepository, AuthService authService, UserAppRepository userAppRepository, RoleAppRepository roleAppRepository) {
         return args -> {
-            repositoryRestConfiguration.exposeIdsFor(Appli.class, Content.class, UserApp.class, RoleApp.class);
+            //repositoryRestConfiguration.exposeIdsFor(Appli.class, Content.class, UserApp.class, RoleApp.class);
             userAppRepository.deleteAll();
             authService.delAllAppToAllUser();
             roleAppRepository.deleteAll();
             contentRepository.deleteAll();
             appliRepository.deleteAll();
 
-            List<Appli> listAppli;
+//            List<Appli> listAppli;
             ReadExcel readExcel = new ReadExcel();
-            listAppli = readExcel.getAppliList();
-            for (Appli tempAppli : listAppli) {
-                appliRepository.save(tempAppli);
-            }
-            appliRepository.findAll().forEach(System.out::println);
+//            listAppli = readExcel.getAppliList();
+//            for (Appli tempAppli : listAppli) {
+//                appliRepository.save(tempAppli);
+//            }
+//            appliRepository.findAll().forEach(System.out::println);
+
+            WriteApplisIntoDataBase writeApplisIntoDataBase = new WriteApplisIntoDataBase();
+            writeApplisIntoDataBase.writeApplisIntoDabase(appliRepository);
 
             // Table Content filling
             contentRepository.deleteAll();
             List<Content> listContent = readExcel.getContentList(appliRepository.findAll());
             for (Content tempContent : listContent) {
-                contentRepository.save(tempContent);
+                try {
+                    contentRepository.save(tempContent);
+                }
+            catch (DataIntegrityViolationException e) {System.out.println("Error contentRepository " + e.getMessage());}
             }
             contentRepository.findAll().forEach(System.out::println);
 
@@ -86,6 +95,7 @@ class FillingDataBaseFromExcelFileMain {
             authService.addAppliToUser("user2", "MAP Vue DE");
             authService.addAppliToUser("user3", "Profil de compétences");
             userAppRepository.findAll().forEach(System.out::println);
+            System.out.println("option " + option);
         };
     }
     // créer BCryptPasswordEncoder au démarrage de l'appli pour injection dans couche Service

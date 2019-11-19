@@ -58,18 +58,18 @@ class ReadHtmlTable {
             index = i;
             Element row = rows.get(i);
             Elements cols = row.select("td");
-        //    Attributes onClick = row.attributes();
-        //    String urlNonFiltrered = onClick.get("onclick");
+            Attributes onClick = row.attributes();
+            String urlNonFiltrered = onClick.get("onclick");
 
-        //    int posLocationHref = urlNonFiltrered.indexOf("location.href="); //recherche y compris le guillement
+            int posLocationHref = urlNonFiltrered.indexOf("location.href="); //recherche y compris le guillement
             Content content = new Content();
-       //     if (posLocationHref != -1) {
-      //          String url = urlNonFiltrered.substring(posLocationHref + "location.href=\'".length(), urlNonFiltrered.length() - 1);
+            if (posLocationHref != -1) {
+                String url = urlNonFiltrered.substring(posLocationHref + "location.href=\'".length(), urlNonFiltrered.length() - 1);
 
-      //          int posPubId = url.indexOf("pubId=");
-      //          int posAmpersand = url.indexOf("&");
-       //         String idContent = url.substring(posPubId + "pubId=".length(), posAmpersand);
-        //    }
+                int posPubId = url.indexOf("pubId=");
+                int posAmpersand = url.indexOf("&");
+                String idContent = url.substring(posPubId + "pubId=".length(), posAmpersand);
+            }
 
             content.setIdContentKM(cols.get(0).text());
             if (cols.get(2).text().equals("Publiée")) {
