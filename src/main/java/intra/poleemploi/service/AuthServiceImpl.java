@@ -7,29 +7,22 @@ import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.RoleApp;
 import intra.poleemploi.entities.UserApp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
 public class AuthServiceImpl implements AuthService {
-
+    @Autowired
+    private UserAppRepository userAppRepository;
     @Autowired
     private RoleAppRepository roleAppRepository;
     @Autowired
     private AppliRepository appliRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private UserAppRepository userAppRepository;
 
     @Override
     public UserApp saveUserApp(String username, String password, String confirmedPassword) {
@@ -47,6 +40,12 @@ public class AuthServiceImpl implements AuthService {
         userApp.setActivated(true);
         // attribue role par défaut à user
         addRoleToUser(username, "USER");
+        return userApp;
+    }
+
+    @Override
+    public UserApp saveUserApp(UserApp userApp) {
+        userAppRepository.save(userApp);
         return userApp;
     }
 
@@ -76,14 +75,5 @@ public class AuthServiceImpl implements AuthService {
         userApp.getApplis().add(appli);
     }
 
-    @Override
-    public void delAllAppToAllUser() {
-        List<UserApp> userAppList = userAppRepository.findAll();
-        Collection<Appli> appliList = new ArrayList<Appli>();
-        for (UserApp userApp : userAppList) {
-            appliList = userApp.getApplis();
-            userApp.getApplis().removeAll(appliList);
-        }
-    }
 
 }

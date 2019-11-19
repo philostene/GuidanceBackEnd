@@ -7,4 +7,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface UserAppRepository extends JpaRepository<UserApp, Long> {
     UserApp findUserByUsername(String username);
+    UserApp findUserById(Long id);
 }

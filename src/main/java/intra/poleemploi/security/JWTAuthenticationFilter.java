@@ -3,7 +3,9 @@ package intra.poleemploi.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import intra.poleemploi.dao.UserAppRepository;
 import intra.poleemploi.entities.UserApp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,8 +24,11 @@ import java.util.List;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    private UserAppRepository userAppRepository;
+
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager,  UserAppRepository userAppRepository) {
         this.authenticationManager = authenticationManager;
+        this.userAppRepository = userAppRepository;
     }
 
     // récupération username et pwd de l'utilisateur authentifié et retour a Spring security
@@ -49,10 +54,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         authResult.getAuthorities().forEach(auth -> {
             roles.add(auth.getAuthority());
         });
-
+        // récupère un userApp et on créé le jeton pour l'userApp avec les claims souhaités
+        UserApp userApp = userAppRepository.findUserByUsername(user.getUsername());
         String jwt = JWT.create()
                 .withIssuer(request.getRequestURI()) // nom de l'autorité de l'application ayant généré le token
-                .withSubject(user.getUsername()) // nom de l'utilisateur
+                .withClaim("id", userApp.getId()) // id de l'utilisateur
+                .withClaim("username", userApp.getUsername()) // nom de l'utilisateur
                 .withArrayClaim("roles", roles.toArray(new String[roles.size()])) // ajout des roles
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityParams.EXPIRATION)) // date d'expiration
                 .sign(Algorithm.HMAC256(SecurityParams.SECRET)); // signature + secret

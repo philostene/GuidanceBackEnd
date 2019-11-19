@@ -1,5 +1,6 @@
 package intra.poleemploi.security;
 
+import intra.poleemploi.dao.UserAppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    UserAppRepository userAppRepository;
 
     // définit les utilisateurs qui ont accès à l'appli => permet de les authentifier
     @Override
@@ -34,7 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/login/**", "/register/**").permitAll();
+        // ***** A ENLEVER POUR LA PROD >> IL FAUT ETRE ADMIN POUR MODIFIER LES ROLES ET LES APPLIS DE USER ***** //
+        http.authorizeRequests().antMatchers("/login/**", "/adminUsers/**", "/updateUserRoles/**", "/updateUserApplis/**", "/getUserById/**").permitAll();
         // ***** A ENLEVER POUR LA PROD >> IL FAUT ETRE ADMIN POUR AVOIR LISTE DES USERS et ROLES ***** //
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/userApps/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/roleApps/**").permitAll();
@@ -48,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         // ajout du filtre JWTAuth pour générer le token
-        http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), userAppRepository));
         http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }

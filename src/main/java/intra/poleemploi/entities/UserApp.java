@@ -26,11 +26,12 @@ public class UserApp {
     private String password;
     private boolean activated;
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="userapp_roles", joinColumns=@JoinColumn(name="user_app_id"), inverseJoinColumns=@JoinColumn(name="roles_id"))
     private Collection<RoleApp> roles = new ArrayList<>();
     /*@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name="userapp_applis", joinColumns = @JoinColumn(name="user_app_id"), inverseJoinColumns = @JoinColumn(name="applis_id"))
     @LazyCollection(LazyCollectionOption.FALSE)*/
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "userapp_applis", joinColumns = @JoinColumn(name = "user_app_id"), inverseJoinColumns = @JoinColumn(name = "applis_id"))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name="userapp_applis", joinColumns=@JoinColumn(name="user_app_id"), inverseJoinColumns=@JoinColumn(name="applis_id"))
     private Set<Appli> applis;
 }

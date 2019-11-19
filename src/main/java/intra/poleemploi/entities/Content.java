@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor @ToString
@@ -18,21 +18,17 @@ public class Content implements Serializable{
     private String idContentKM;
     private String contentName;
     private boolean published;
-    private  String typeService;
-    //  @Column(name="NbAffichages")
-    private int nbAffichages;
-    //  @Column(name="NbLectures")
-    private int nbLectures;
+    private String typeService;
+    private Integer nbAffichages;
+    private Integer nbLectures;
     //private String description;
-    //private String icone;
-    //private String contentURL;
-    //private Date debut;
-    //private Date fin;
+    //private int nbLectures;
+    //private int nbUsers;
+    //private double displayDuration;
+    //private Date date;
     @ManyToOne
     @JoinColumn(name = "id_appli", nullable = false)
     private Appli appli;
 
-    public Object getPublished() {
-        return published;
-    }
+
 }
