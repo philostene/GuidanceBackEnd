@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 @SpringBootApplication //(scanBasePackages={"intra.poleemploi"})
 
-class FillingDataBaseFromExcelFileMain {
+class FillingDataBaseMain {
 //    @Autowired
 //    private RepositoryRestConfiguration repositoryRestConfiguration;
        // Décommenter l'option désirée
@@ -31,7 +31,7 @@ class FillingDataBaseFromExcelFileMain {
       //private String option = "WriteExcelFromDataBase"; //Write Excel from database
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = SpringApplication.run(FillingDataBaseFromExcelFileMain.class, args);
+        ConfigurableApplicationContext ctx = SpringApplication.run(FillingDataBaseMain.class, args);
         ctx.close();
     }
 
@@ -109,7 +109,7 @@ class FillingDataBaseFromExcelFileMain {
                     // Table statistique par jour filling
 
                     List<StatistiquesParJour> listStatistiquesParJour = new ArrayList<>();
-                    //      listStatistiquesParJour = loginKnowMore.getStatistiquesParJourList(contentRepository.findAll());
+                    listStatistiquesParJour = loginKnowMore.listStatistics(contentRepository.findAll());
                     for (StatistiquesParJour tempStempStatistiquesParJour : listStatistiquesParJour) {
                         statistiquesParJourRepository.save(tempStempStatistiquesParJour);
                     }

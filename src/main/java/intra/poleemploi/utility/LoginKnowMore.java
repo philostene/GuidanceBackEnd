@@ -1,5 +1,6 @@
 package intra.poleemploi.utility;
 
+import intra.poleemploi.Consts.Consts;
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.Content;
 import intra.poleemploi.entities.StatistiquesParJour;
@@ -19,19 +20,12 @@ import java.util.List;
 
 public class LoginKnowMore {
 
-    // http://pr051-gfpe-3upxjf0.sip91.pole-emploi.intra:22391/know/login.jsp    //prod
-    // http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/index.jsp    //recette
-
     private static String jsessionId;
 
-//    public String getJsessionId() {
-//        return jsessionId;
-//    }
-
     public List<Appli> listAppli() throws IOException {
-        String url = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/servlet/LoginCheck";
+        String url = Consts.URLBASELOGINKM;
         ReadHtmlTable readHtmlTable = new ReadHtmlTable();
-        String response = httpPostListAppi(url);
+        String response = httpPostListAppli(url);
         return readHtmlTable.getAppliList(response);
     }
 
@@ -40,11 +34,8 @@ public class LoginKnowMore {
 
         List<Content> listcontentToBeReturned = new ArrayList<>();
 
-       // String url = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/servlet/LoginCheck";
-        String statisticBaseURL = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/admin/statistic/?applicationId=";
+        String statisticBaseURL = Consts.URLBASEFORCONTENTSDETAILS;
         String statisticURL;
-
-      //  String location = null;
         String response;
 
         for (Appli appli : listAppli) {
@@ -61,15 +52,53 @@ public class LoginKnowMore {
         }
         return listcontentToBeReturned;
     }
+    
+    public List<StatistiquesParJour> listStatistics(List <Content> listContents) throws IOException {
+        List<StatistiquesParJour> listSatisticsParJourReturned = null;
+      //  String statisticBaseURL = Consts.URLBASEFORSTATISTICSDETAILS;
+        String statisticsURL;
+        String response;
+        for (Content content : listContents){
+            ReadHtmlTable readHtmlTable = new ReadHtmlTable();
+            statisticsURL = content.getContentURL();
+            response = httpGetListStatistics(statisticsURL);
 
-    List<StatistiquesParJour> listStatistiquesParJour(List<Content> listContents){
-        List<StatistiquesParJour> listStatistiquesParJourReturned = new ArrayList<>();
-        String statisticPerDayBaseURL = "http://kmore-gfpe-fkqt507.sii24.pole-emploi.intra:15071/know/view/statistics/publicationStatistics?pubId="; //535&fromDate=27%2f10%2f2019&toDate=18%2f11%2f2019"
-
-        return listStatistiquesParJourReturned;
+            List<StatistiquesParJour> listStatistiquesParJour= readHtmlTable.getStatisticsList(response, content);
+            try {
+                listSatisticsParJourReturned.addAll(listStatistiquesParJour);
+            }
+            catch ( Exception e) {
+                System.out.println(" LoginKnowmore.listContents error  " + e.getMessage());
+            }
+        }
+        return listSatisticsParJourReturned;
     }
 
-    private String httpPostListAppi(String url) throws IOException {
+    public String httpGetListStatistics(String url) throws IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(url);
+
+        httpGet.setHeader(HttpHeaders.ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/png,*/*;q=0.8,application/signed-exchange;v=b3");
+        httpGet.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Mobile Safari/537.36");
+        httpGet.setHeader("Accept-Encoding", "gzip, deflate");
+        httpGet.setHeader("Accept-Language", "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7");
+        httpGet.setHeader("Upgrade-Insecure-Requests", "1");
+        httpGet.setHeader("cache-control", "no-cache");
+        httpGet.setHeader("Connection", "keep-alive");
+        httpGet.setHeader("Cookie", "KM_INFO=&id:27e3fz5ggta; " + jsessionId);
+        CloseableHttpResponse response = httpclient.execute(httpGet);
+        int statusCode = response.getStatusLine().getStatusCode();
+        String responseKM;
+        if (statusCode == 200) {
+            responseKM = EntityUtils.toString(response.getEntity(), "UTF8");
+            httpclient.close();
+            return responseKM;
+        }
+        throw new RuntimeException("Failed with HTTP error code : " + statusCode);
+    }
+
+    private String httpPostListAppli(String url) throws IOException {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
