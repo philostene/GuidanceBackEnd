@@ -11,7 +11,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -67,12 +66,12 @@ class FillingDataBaseMainFromKM {
                 }
                 catch (Exception e) {System.out.println("error FillingDataBaseMainMenuFromKM "+ e.getMessage() + Arrays.toString(e.getStackTrace()));}
             }
-            contentRepository.findAll().forEach(System.out::println);
+           // contentRepository.findAll().forEach(System.out::println);
 
             // Table statistique par jour filling
             statistiquesParJourRepository.deleteAll();
-            List<StatistiquesParJour> listStatistiquesParJour = new ArrayList<>();
-      //      listStatistiquesParJour = loginKnowMore.getStatistiquesParJourList(contentRepository.findAll());
+            List<StatistiquesParJour> listStatistiquesParJour;
+            listStatistiquesParJour = loginKnowMore.listStatistics(contentRepository.findAll());
             for (StatistiquesParJour tempStempStatistiquesParJour : listStatistiquesParJour) {
                 statistiquesParJourRepository.save(tempStempStatistiquesParJour);
             }

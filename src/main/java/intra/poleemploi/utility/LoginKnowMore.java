@@ -54,7 +54,7 @@ public class LoginKnowMore {
     }
     
     public List<StatistiquesParJour> listStatistics(List <Content> listContents) throws IOException {
-        List<StatistiquesParJour> listSatisticsParJourReturned = null;
+        List<StatistiquesParJour> listSatisticsParJourReturned = new ArrayList<>();
       //  String statisticBaseURL = Consts.URLBASEFORSTATISTICSDETAILS;
         String statisticsURL;
         String response;

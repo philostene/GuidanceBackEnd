@@ -84,32 +84,25 @@ class FillingDataBaseMain {
                 case "WriteDataBaseFromKM" :
                     List<Appli> listAppli;
                     LoginKnowMore loginKnowMore = new LoginKnowMore();
-
                     listAppli = loginKnowMore.listAppli();                             //readHtmlTable.getAppliList();
                     for (Appli tempAppli : listAppli) {
                         appliRepository.save(tempAppli);
                     }
-                    appliRepository.findAll().forEach(System.out::println);
-                    // Table Content filling
-                    contentRepository.deleteAll();
+                 //   appliRepository.findAll().forEach(System.out::println);
 
                     List<Content> listContents;
-
                     //  listContent = readHtmlTable.getContentList(appliRepository.findAll());
                     listContents = loginKnowMore.listContents(listAppli);
-
                     for (Content tempContent : listContents) {
                         try {
                             contentRepository.save(tempContent);
                         }
                         catch (Exception e) {System.out.println("error FillingDataBaseMainMenuFromKM "+ e.getMessage() + Arrays.toString(e.getStackTrace()));}
                     }
-                    contentRepository.findAll().forEach(System.out::println);
-
-                    // Table statistique par jour filling
+          //          contentRepository.findAll().forEach(System.out::println);
 
                     List<StatistiquesParJour> listStatistiquesParJour = new ArrayList<>();
-                    listStatistiquesParJour = loginKnowMore.listStatistics(contentRepository.findAll());
+                    listStatistiquesParJour = loginKnowMore.listStatistics(listContents);
                     for (StatistiquesParJour tempStempStatistiquesParJour : listStatistiquesParJour) {
                         statistiquesParJourRepository.save(tempStempStatistiquesParJour);
                     }

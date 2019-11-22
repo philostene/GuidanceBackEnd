@@ -54,7 +54,7 @@ class ReadHtmlTable {
         Document doc = Jsoup.parse(html);
 
         try {
-            Element table = doc.select("table").get(2); //select the first table.
+            Element table = doc.select("table").get(0); //select the first table.
             Elements rows = table.select("tr");
 
             for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
@@ -112,18 +112,18 @@ class ReadHtmlTable {
         Document doc = Jsoup.parse(html);
 
         try {
-            Element table = doc.select("table").get(3); //select the second table.
+            Element table = doc.select("table").get(2); //select the second table.
             Elements rows = table.select("tr");
-
+            StatistiquesParJour[] statistiquesParJour = new StatistiquesParJour[rows.size()];
             for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
                 index = i;
                 Element row = rows.get(i);
                 Elements cols = row.select("td");
-                StatistiquesParJour statistiquesParJour = new StatistiquesParJour();
 
-                statistiquesParJour.setDate(cols.get(0).text());
-                statistiquesParJour.setNbAffichage(Long.parseLong(cols.get(1).text()));
-                statistiquesParJour.setNbUsersAyantAffichesLaPastille(Long.parseLong(cols.get(2).text()));
+                statistiquesParJour[i] = new StatistiquesParJour();
+                statistiquesParJour[i].setDate(cols.get(0).text());
+                statistiquesParJour[i].setNbAffichage(Long.parseLong(cols.get(1).text()));
+                statistiquesParJour[i].setNbUsersAyantAffichesLaPastille(Long.parseLong(cols.get(2).text()));
                 //         statistiquesParJour.setNbDeLectureDeLaPastille(Long.parseLong(cols.get(3).text()));
                 //         statistiquesParJour.setNbUsersAyantLusLaPastille(Long.parseLong(cols.get(5).text()));
                 //         statistiquesParJour.setTempsPasseSurLaPastilleMS(Long.parseLong(cols.get(6).text()));
@@ -136,40 +136,44 @@ class ReadHtmlTable {
                 //                 + " col7 " + cols.get(6).text());
             }
 
+            table = doc.select("table").get(3); //select the second table.
+            rows = table.select("tr");
+
+            for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
+                index = i;
+                Element row = rows.get(i);
+                Elements cols = row.select("td");
+
+                //   statistiquesParJour.setDate(cols.get(0).text());
+                //   statistiquesParJour.setNbAffichage(Long.parseLong(cols.get(1).text()));
+                //   statistiquesParJour.setNbUsersAyantAffichesLaPastille(Long.parseLong(cols.get(2).text()));
+                statistiquesParJour[i].setNbDeLectureDeLaPastille(Long.parseLong(cols.get(1).text()));
+                statistiquesParJour[i].setNbUsersAyantLusLaPastille(Long.parseLong(cols.get(2).text()));
+//                String strRemoveChar = cols.get(3).text();
+//                String strRes = strRemoveChar.replace(" s","");
+//                String strFinalRes = strRes.replace(",",".");
+                statistiquesParJour[i].setTempsPasseSurLaPastilleMS(cols.get(3).text());
+                statistiquesParJour[i].setContent(content);
+                listStatistics.add(statistiquesParJour[i]);
+                //    System.out.println("col1 " + cols.get(0).text() + " col2 " + cols.get(1).text()
+                //            + " col3 " + cols.get(2).text() + " col4 " + cols.get(3).text()
+                //            + " col5 " + cols.get(4).text() + " col6 " + cols.get(5).text()
+                //            + " col7 " + cols.get(6).text());
+            }
+
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             System.out.println(ErrorMessage.READHTMLTABLERRORONGETCONTENTSLIST + e.getMessage()
                     + " index i =  " + index + " appli " + content.getIdContentKM()+ " ContentId " + content.getAppli().getIdAppliKM());
             return null;
         }
 //Reading second table
-        try {
-            Element table = doc.select("table").get(1); //select the second table.
-            Elements rows = table.select("tr");
-
-            for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
-                index = i;
-                Element row = rows.get(i);
-                Elements cols = row.select("td");
-                StatistiquesParJour statistiquesParJour = new StatistiquesParJour();
-
-                //   statistiquesParJour.setDate(cols.get(0).text());
-                //   statistiquesParJour.setNbAffichage(Long.parseLong(cols.get(1).text()));
-                //   statistiquesParJour.setNbUsersAyantAffichesLaPastille(Long.parseLong(cols.get(2).text()));
-                statistiquesParJour.setNbDeLectureDeLaPastille(Long.parseLong(cols.get(1).text()));
-                statistiquesParJour.setNbUsersAyantLusLaPastille(Long.parseLong(cols.get(2).text()));
-                statistiquesParJour.setTempsPasseSurLaPastilleMS(Long.parseLong(cols.get(3).text()));
-                statistiquesParJour.setContent(content);
-                listStatistics.add(statistiquesParJour);
-                System.out.println("col1 " + cols.get(0).text() + " col2 " + cols.get(1).text()
-                        + " col3 " + cols.get(2).text() + " col4 " + cols.get(3).text()
-                        + " col5 " + cols.get(4).text() + " col6 " + cols.get(5).text()
-                        + " col7 " + cols.get(6).text());
-            }
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            System.out.println(ErrorMessage.READHTMLTABLERRORONGETCONTENTSLIST + e.getMessage()
-                    + " index i =  " + index + " Appli " + content.getIdContentKM() + " ContentId " + content.getAppli().getIdAppliKM());
-            return null;
-        }
+//        try {
+//
+//        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+//            System.out.println(ErrorMessage.READHTMLTABLERRORONGETCONTENTSLIST + e.getMessage()
+//                    + " index i =  " + index + " Appli " + content.getIdContentKM() + " ContentId " + content.getAppli().getIdAppliKM());
+//            return null;
+//        }
         return listStatistics;
     }
 }
