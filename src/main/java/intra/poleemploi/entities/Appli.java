@@ -17,9 +17,12 @@ public class Appli implements Serializable {
     private Integer id;
     @Column(unique = true)
     private String appliName;
-    private String idAppliKM;
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "appli", orphanRemoval = true)
-    private Collection<Content> contents = new ArrayList<>();
+    @OneToMany (fetch = FetchType.EAGER, mappedBy = "appli", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Content> contents;
+    @ManyToMany
+    private Set<UserApp> users;
+    @Column(name="AppliURL")
+    private String appliURL;
 
     @Override
     public String toString() {
@@ -28,5 +31,22 @@ public class Appli implements Serializable {
                 ", appliName='" + appliName + '\'' +
                 ", idAppliKM='" + idAppliKM + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // self check
+        if (this == o)
+            return true;
+        // null check
+        if (o == null)
+            return false;
+        // type check and cast
+        if (getClass() != o.getClass())
+            return false;
+        Appli appli = (Appli) o;
+        // field comparison
+        return Objects.equals(id, appli.id)
+                && Objects.equals(idAppliKM, appli.idAppliKM);
     }
 }

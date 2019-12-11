@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,7 +29,11 @@ public class UserApp {
     /*@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name="userapp_applis", joinColumns = @JoinColumn(name="user_app_id"), inverseJoinColumns = @JoinColumn(name="applis_id"))
     @LazyCollection(LazyCollectionOption.FALSE)*/
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="userapp_applis", joinColumns=@JoinColumn(name="user_app_id"), inverseJoinColumns=@JoinColumn(name="applis_id"))
-    private Set<Appli> applis;
+   // @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    //@JoinTable(name = "userapp_applis", joinColumns = @JoinColumn(name = "user_app_id"), inverseJoinColumns = @JoinColumn(name = "applis_id"))
+    @ManyToMany (fetch = FetchType.EAGER)
+    private Set<Appli> appliSet;
+    @ManyToMany (fetch = FetchType.EAGER)
+    private Set<RoleApp> roleApps;
+
 }
