@@ -18,10 +18,10 @@ public class Appli implements Serializable {
     private String idAppliKM;
     @Column(unique = true)
     private String appliName;
-    @OneToMany (cascade = CascadeType.ALL, mappedBy = "appli", orphanRemoval = true)
-    private Collection<Content> contents = new ArrayList<>();
-   // @ManyToMany(fetch = FetchType.EAGER)
-   //private Collection<UserApp> users = new ArrayList<>();
+    @OneToMany (fetch = FetchType.EAGER, mappedBy = "appli", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Content> contents;
+    @ManyToMany
+    private Set<UserApp> users;
     @Column(name="AppliURL")
     private String appliURL;
 
@@ -32,5 +32,22 @@ public class Appli implements Serializable {
                 ", idAppliKM='" + idAppliKM + '\'' +
                 ", appliName='" + appliName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // self check
+        if (this == o)
+            return true;
+        // null check
+        if (o == null)
+            return false;
+        // type check and cast
+        if (getClass() != o.getClass())
+            return false;
+        Appli appli = (Appli) o;
+        // field comparison
+        return Objects.equals(id, appli.id)
+                && Objects.equals(idAppliKM, appli.idAppliKM);
     }
 }

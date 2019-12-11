@@ -7,16 +7,12 @@ import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.RoleApp;
 import intra.poleemploi.entities.UserApp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -73,16 +69,18 @@ public class AuthServiceImpl implements AuthService {
     public void addAppliToUser(String username, String appliName) {
         UserApp userApp = userAppRepository.findUserByUsername(username);
         Appli appli = appliRepository.findAppliByAppliName(appliName);
-        userApp.getApplis().add(appli);
+        userApp.getAppliSet().add(appli);
     }
 
     @Override
     public void delAllAppToAllUser() {
         List<UserApp> userAppList = userAppRepository.findAll();
-        Collection<Appli> appliList = new ArrayList<Appli>();
-        for (UserApp userApp : userAppList) {
-            appliList = userApp.getApplis();
-            userApp.getApplis().removeAll(appliList);
+        Collection<Appli> appliList = null;
+        for (UserApp user : userAppList) {
+            appliList = user.getAppliSet();
+            for (Appli appli : appliList) {
+                user.getAppliSet().removeAll(appliList);
+            }
         }
     }
 
