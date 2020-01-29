@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data @AllArgsConstructor @NoArgsConstructor @ToString
@@ -16,6 +17,11 @@ public class RoleApp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String roleName;
-    @ManyToMany (fetch = FetchType.EAGER)
-    private Set<UserApp> userApps;
+    @OneToMany(mappedBy="roles")
+    private Collection<UserApp> userApp;
+
+    public RoleApp(String user, List<UserApp> o) {
+        this.roleName = user;
+        this.userApp = o;
+    }
 }

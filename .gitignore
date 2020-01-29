@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+hs_err_pid11204.log
+
+replay_pid11204.log

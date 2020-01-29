@@ -15,14 +15,16 @@ public class Appli implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String idAppliKM;
     @Column(unique = true)
     private String appliName;
-    @OneToMany (fetch = FetchType.EAGER, mappedBy = "appli", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Content> contents;
-    @ManyToMany
-    private Set<UserApp> users;
+    @OneToMany (mappedBy = "appli", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Content> contents = new ArrayList<>();
     @Column(name="AppliURL")
     private String appliURL;
+
+    @ManyToMany (mappedBy = "applis")
+    private List<UserApp> userApps = new ArrayList<>();
 
     @Override
     public String toString() {

@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginKnowMore {
+public class LoginKnowMoreHttps {
 
     private static String jsessionId;
 

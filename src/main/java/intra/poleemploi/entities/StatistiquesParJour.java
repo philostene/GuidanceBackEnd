@@ -1,17 +1,20 @@
 package intra.poleemploi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor @ToString
 @Table(name="statistiquesParJour")
-public class StatistiquesParJour implements Serializable {
+public class StatistiquesParJour implements Serializable  {  //resourceSupport has been renamed ReprensentationModel
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +32,7 @@ public class StatistiquesParJour implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ContentID",nullable = false)
     private Content content;
+    private Date dateDB;
 
     public StatistiquesParJour(String s, Content content) {
         this.date = s;

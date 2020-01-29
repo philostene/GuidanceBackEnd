@@ -26,9 +26,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(userApp == null) throw new UsernameNotFoundException("Invalid user");
         // gestion des roles - authorities
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        userApp.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        });
+   //     ;
+         //   authorities.add(new SimpleGrantedAuthority(userApp.getRoles().getRoleName()))
+            authorities.add(new SimpleGrantedAuthority(userApp.getRoles().getRoleName()));
+
         // retourne User (fournit par Spring avec username, pwd et authorities)
         return new User(userApp.getUsername(), userApp.getPassword(), authorities);
     }

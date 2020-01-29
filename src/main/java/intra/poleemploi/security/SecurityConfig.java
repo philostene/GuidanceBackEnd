@@ -2,7 +2,6 @@ package intra.poleemploi.security;
 
 import intra.poleemploi.dao.UserAppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -43,12 +42,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/userApps/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/roleApps/**").permitAll();
         http.authorizeRequests().antMatchers("/userApps/**", "/roleApps/**").hasAuthority("ADMIN");
-
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/applis/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/contents/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/statistiquesParJours/**").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/statistiquesparjour/**").permitAll();
         http.authorizeRequests().antMatchers("/applis/**").hasAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/contents/**").hasAuthority("USER");
-
+        http.authorizeRequests().antMatchers("/statistiquesParJours/**").hasAuthority("USER");
+        http.authorizeRequests().antMatchers("/statistiquesparjour/**").hasAuthority("USER");
         http.authorizeRequests().anyRequest().authenticated();
 
         // ajout du filtre JWTAuth pour générer le token

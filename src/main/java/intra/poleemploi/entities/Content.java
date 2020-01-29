@@ -30,8 +30,7 @@ public class Content implements Serializable{
     private Date debut;
     private Date fin;
     @ManyToOne
-    @JoinColumn(name = "id8appli", nullable = false)
-   //@Column(name = "AppliId")
+    @JoinColumn(name = "id_appli", nullable = false)
     private Appli appli;
     private String pubID;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "content",cascade=CascadeType.ALL,orphanRemoval = true)

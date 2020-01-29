@@ -67,14 +67,14 @@ public class AuthServiceImpl implements AuthService {
         UserApp userApp = userAppRepository.findUserByUsername(username);
         RoleApp roleApp = roleAppRepository.findRoleByRoleName(roleName);
         // ajout role à user
-        userApp.getRoles().add(roleApp);
+        userApp.setRoles(roleApp);
     }
 
     @Override
     public void addAppliToUser(String username, String appliName) {
         UserApp userApp = userAppRepository.findUserByUsername(username);
         Appli appli = appliRepository.findAppliByAppliName(appliName);
-        userApp.getAppliSet().add(appli);
+        userApp.getApplis().add(appli);
     }
 
     @Override
@@ -82,9 +82,9 @@ public class AuthServiceImpl implements AuthService {
         List<UserApp> userAppList = userAppRepository.findAll();
         Collection<Appli> appliList = null;
         for (UserApp user : userAppList) {
-            appliList = user.getAppliSet();
+            appliList = user.getApplis();
             for (Appli appli : appliList) {
-                user.getAppliSet().removeAll(appliList);
+                user.getApplis().removeAll(appliList);
             }
         }
     }

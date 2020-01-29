@@ -1,6 +1,8 @@
 package intra.poleemploi.web;
 
 import intra.poleemploi.dao.AppliRepository;
+import intra.poleemploi.dao.ContentRepository;
+import intra.poleemploi.dao.StatistiquesParJourRepository;
 import intra.poleemploi.dao.UserAppRepository;
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.RoleApp;
@@ -27,6 +29,10 @@ public class UserController {
     private UserAppRepository userAppRepository;
     @Autowired
     private AppliRepository appliRepository;
+    @Autowired
+    private ContentRepository contentRepository;
+    @Autowired
+    private StatistiquesParJourRepository statistiquesParJourRepository;
 
     @PostMapping("/adminUsers")
     public UserApp register(@RequestBody UserForm userForm){ // données envoyées au format JSON
@@ -35,9 +41,11 @@ public class UserController {
 
     @PutMapping("/updateUserRoles/{id}")
     public ResponseEntity<UserApp> updateUserRoles(@PathVariable(value="id") Long id, @RequestBody List<RoleApp> roles) throws ResourceNotFoundException {
+        RoleApp role = new RoleApp();
         UserApp userBdd = userAppRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + id));
-        userBdd.setRoles(roles);
+        role = roles.get(0);
+        userBdd.setRoles(role);
         ResponseEntity<UserApp> response = ResponseEntity.ok(authService.saveUserApp(userBdd));
         return response ;
     }
