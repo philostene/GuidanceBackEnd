@@ -1,6 +1,6 @@
 package intra.poleemploi.security;
 
-import intra.poleemploi.dao.UserAppRepository;
+import intra.poleemploi.repository.UserAppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // ***** A ENLEVER POUR LA PROD >> IL FAUT ETRE ADMIN POUR MODIFIER LES ROLES ET LES APPLIS DE USER ***** //
-        http.authorizeRequests().antMatchers("/login/**", "/adminUsers/**", "/updateUserRoles/**", "/updateUserApplis/**", "/getUserById/**").permitAll();
+        http.authorizeRequests().antMatchers("/login/**", "/adminApplis/**", "/adminUsers/**", "/updateUserRoles/**", "/updateUserApplis/**", "/getUserById/**").permitAll();
         // ***** A ENLEVER POUR LA PROD >> IL FAUT ETRE ADMIN POUR AVOIR LISTE DES USERS et ROLES ***** //
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/userApps/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/roleApps/**").permitAll();

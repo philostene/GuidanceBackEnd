@@ -1,18 +1,30 @@
 package intra.poleemploi.service;
 
 
-//@Service
-//@Transactional
-//public class AppServiceImpl implements AppService {
+import intra.poleemploi.entities.Appli;
+import intra.poleemploi.repository.AppliRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class AppServiceImpl implements AppService {
+
     // interfaces DAO
-//    private AppliRepository appliRepository;
+    private AppliRepository appliRepository;
 //    private ContentRepository contentRepository;
 
     // Injection des dépendances
-//    public AppServiceImpl(AppliRepository appliRepository, ContentRepository contentRepository) {
-//        this.appliRepository = appliRepository;
-//        this.contentRepository = contentRepository;
-//    }
+   public AppServiceImpl(AppliRepository appliRepository) {
+       this.appliRepository = appliRepository;
+//       this.contentRepository = contentRepository;
+    }
+    @Override
+    public List<Appli> findAllAppli() {
+        return appliRepository.findAll();
+    }
 //
 //    @Override
 //    public Appli saveAppli(String appliName) {
@@ -38,9 +50,6 @@ package intra.poleemploi.service;
 //        appli.getContents().add(content);
 //    }
 //
-//    @Override
-//    public List<Appli> findAllAppli() {
-//        return appliRepository.findAll();
 //    }
 
 //    @Override
@@ -59,4 +68,4 @@ package intra.poleemploi.service;
 //        return appliRepository.findAll();
 //    }
 
-//}
+}

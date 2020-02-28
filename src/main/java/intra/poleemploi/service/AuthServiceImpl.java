@@ -1,8 +1,8 @@
 package intra.poleemploi.service;
 
-import intra.poleemploi.dao.AppliRepository;
-import intra.poleemploi.dao.RoleAppRepository;
-import intra.poleemploi.dao.UserAppRepository;
+import intra.poleemploi.repository.AppliRepository;
+import intra.poleemploi.repository.RoleAppRepository;
+import intra.poleemploi.repository.UserAppRepository;
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.entities.RoleApp;
 import intra.poleemploi.entities.UserApp;

@@ -1,10 +1,10 @@
 package intra.poleemploi.web;
 
-import intra.poleemploi.dao.ContentRepository;
-import intra.poleemploi.dao.StatistiquesParJourRepository;
+import intra.poleemploi.repository.ContentRepository;
+import intra.poleemploi.repository.StatistiquesParJourRepository;
 import intra.poleemploi.entities.Content;
 import intra.poleemploi.entities.StatistiquesParJour;
-import intra.poleemploi.entities.StatistiquesParJourDto;
+import intra.poleemploi.dto.StatistiquesParJourDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -43,15 +43,15 @@ public class StatisticsController {
        System.out.println("pubId " + pubId);
        System.out.println("fromDate " + fromDate);
        System.out.println("toDate " + toDate);
-       String sDate = "10/11/2019";
+      // String sDate = "10/11/2019";
        Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(fromDate);
-       sDate = "15/11/2019";
+     //  sDate = "15/11/2019";
       // sDate = "15112019";
       // Date sDateTest = new SimpleDateFormat("dd/MM/yyyy").parse(sDate);
        Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(toDate);
        Content content = contentRepository.findById(Integer.parseInt(pubId));
-       List<StatistiquesParJour> statistiquesParJourList = statistiquesParJourRepository.findByContentAndDateDBBetween(content, date1, date2);
-
+       List<StatistiquesParJour> statistiquesParJourList = statistiquesParJourRepository.findByContentAndDateDBBetween(content, date1, date2); //fonctionne avec dateDB dans StatistiquesParJour
+     //   List<StatistiquesParJour> statistiquesParJourList = statistiquesParJourRepository.findByContent(content);
        for (StatistiquesParJour statJour :statistiquesParJourList) {
              StatistiquesParJourDto statistiquesParJourDto = new StatistiquesParJourDto();
              statistiquesParJourDto.setId(statJour.getId());

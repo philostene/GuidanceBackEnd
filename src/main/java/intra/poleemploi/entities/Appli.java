@@ -18,11 +18,13 @@ public class Appli implements Serializable {
     private String idAppliKM;
     @Column(unique = true)
     private String appliName;
+    private String icon;
     @OneToMany (mappedBy = "appli", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Content> contents = new ArrayList<>();
     @Column(name="AppliURL")
     private String appliURL;
-
+    @Column(name = "URL")
+    private String url;
     @ManyToMany (mappedBy = "applis")
     private List<UserApp> userApps = new ArrayList<>();
 

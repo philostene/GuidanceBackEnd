@@ -1,49 +1,51 @@
-/*
-
 package intra.poleemploi.web;
 
-import intra.poleemploi.dao.AppliRepository;
+import intra.poleemploi.dto.ApplicationDto;
+import intra.poleemploi.dto.StatistiquesParJourDto;
 import intra.poleemploi.entities.Appli;
+import intra.poleemploi.repository.AppliRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
+
 @RestController
+@RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AppliController {
+
     @Autowired
     private AppliRepository appliRepository;
 
-    @GetMapping(value = "/applis")
-    public List<Appli> listApplis(){
-        return appliRepository.findAll();
+    @GetMapping("/applis")
+    public CollectionModel <List<ApplicationDto>> findAllapplis(){
+        List<ApplicationDto> applicationDtoList = new ArrayList<>();
+        Class<AppliController> appliClass = AppliController.class;
+   //     WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).findAllapplis());
+        Link link = linkTo(methodOn(appliClass).findAllapplis()).withSelfRel();
+        List<Appli> appliList = appliRepository.findAll();
+        for (Appli appli : appliList) {
+            ApplicationDto applicationDto = new ApplicationDto();
+            applicationDto.setId(appli.getId());
+            applicationDto.setIdAppliKM(appli.getIdAppliKM());
+            applicationDto.setAppliName(appli.getAppliName());
+            applicationDtoList.add(applicationDto);
+        }
+        CollectionModel<List<ApplicationDto>> response = new CollectionModel(applicationDtoList, link);
+       // response.add(linkTo(AppliController.class).withSelfRel());
+        return response;
+
     }
 
-    @GetMapping(value = "/applis/{id}")
-    public ResponseEntity<Appli> getAppliById(@PathVariable(value = "id") Integer idAppliKM) throws ResourceNotFoundException {
-        Appli appli = appliRepository.findById(idAppliKM)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found for this id :: " + idAppliKM));
-        return ResponseEntity.ok().body(appli);
-    }
-
-    @PutMapping(value = "/applis/{id}")
-    public Appli updateAppli(@PathVariable(name = "id") Integer id, @RequestBody Appli app) {
-        app.setId(id);
-        return appliRepository.save(app);
-    }
-
-    @PostMapping(value = "/applis")
-    public Appli saveAppli(@RequestBody Appli app){
-        return appliRepository.save(app);
-    }
-
-    @DeleteMapping(value = "/applis/{id}")
-    public void deleteAppli(@PathVariable(name="id") Integer id){
-        appliRepository.deleteById(id);
-    }
 }
-
-*/

@@ -18,40 +18,40 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginKnowMoreHttps {
+public class LoginKnowMoreHttp {
 
     private static String jsessionId;
 
-    public List<Appli> listAppli() throws IOException {
-        String url = Consts.URLBASELOGINKM;
-        ReadHtmlTable readHtmlTable = new ReadHtmlTable();
-        String response = httpPostListAppli(url);
-        return readHtmlTable.getAppliList(response);
-    }
+//    public List<Appli> listAppli() throws IOException {
+//        String url = Consts.URLBASELOGINKM;
+//        ReadHtmlTable readHtmlTable = new ReadHtmlTable();
+//        String response = httpPostListAppli(url);
+//        return readHtmlTable.getAppliList(response);
+//    }
 
 
-    public List<Content> listContents(List<Appli> listAppli) throws IOException {
-
-        List<Content> listcontentToBeReturned = new ArrayList<>();
-
-        String statisticBaseURL = Consts.URLBASEFORCONTENTSDETAILS;
-        String statisticURL;
-        String response;
-
-        for (Appli appli : listAppli) {
-            ReadHtmlTable readHtmlTable = new ReadHtmlTable();
-            statisticURL = statisticBaseURL + appli.getIdAppliKM();
-            response = httpGetListContent(statisticURL);
-            List<Content> listContents = readHtmlTable.getContentsList(response,appli);
-            try {
-                listcontentToBeReturned.addAll(listContents);
-            }
-            catch ( Exception e) {
-                System.out.println(" LoginKnowmore.listContents error  " + e.getMessage());
-            }
-        }
-        return listcontentToBeReturned;
-    }
+//    public List<Content> listContents(List<Appli> listAppli) throws IOException {
+//
+//        List<Content> listcontentToBeReturned = new ArrayList<>();
+//
+//        String statisticBaseURL = Consts.URLBASEFORCONTENTSDETAILS;
+//        String statisticURL;
+//        String response;
+//
+//        for (Appli appli : listAppli) {
+//            ReadHtmlTable readHtmlTable = new ReadHtmlTable();
+//            statisticURL = statisticBaseURL + appli.getIdAppliKM();
+//            response = httpGetListContent(statisticURL);
+//            List<Content> listContents = readHtmlTable.getContentsList(response,appli);
+//            try {
+//                listcontentToBeReturned.addAll(listContents);
+//            }
+//            catch ( Exception e) {
+//                System.out.println(" LoginKnowmore.listContents error  " + e.getMessage());
+//            }
+//        }
+//        return listcontentToBeReturned;
+//    }
     
     public List<StatistiquesParJour> listStatistics(List <Content> listContents) throws IOException, InterruptedException {
         List<StatistiquesParJour> listSatisticsParJourReturned = new ArrayList<>();
@@ -74,8 +74,8 @@ public class LoginKnowMoreHttps {
             catch ( Exception e) {
                 System.out.println(" LoginKnowmore.listContents error  " + e.getMessage());
             }
+            Thread.sleep(100); // pour éviter de saturer le serveur
         }
-        Thread.sleep(100); // pour éviter de saturer le serveur
         return listSatisticsParJourReturned;
     }
 

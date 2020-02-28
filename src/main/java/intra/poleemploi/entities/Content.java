@@ -19,6 +19,8 @@ public class Content implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String idContentKM;
+    @Lob                                 //set length for mysql type
+    @Column(name="CONTENT", length=512)  //set length for mysql type
     private String contentName;
     private boolean published;
     private String typeService;
@@ -32,7 +34,7 @@ public class Content implements Serializable{
     @ManyToOne
     @JoinColumn(name = "id_appli", nullable = false)
     private Appli appli;
-    private String pubID;
+    private Integer pubID;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "content",cascade=CascadeType.ALL,orphanRemoval = true)
     private Set<StatistiquesParJour> statistiquesParJoursList;
 

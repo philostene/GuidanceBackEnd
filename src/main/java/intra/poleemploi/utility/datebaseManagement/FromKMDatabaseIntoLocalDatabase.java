@@ -1,6 +1,6 @@
 package intra.poleemploi.service;
 
-import intra.poleemploi.repository.AppliRepository;
+import intra.poleemploi.dao.AppliRepository;
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.utility.ReadExcel;
 

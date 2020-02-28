@@ -1,6 +1,6 @@
 package intra.poleemploi.service;
 
-import intra.poleemploi.dao.StatistiquesParJourRepository;
+import intra.poleemploi.repository.StatistiquesParJourRepository;
 import intra.poleemploi.entities.StatistiquesParJour;
 
 import java.text.ParseException;

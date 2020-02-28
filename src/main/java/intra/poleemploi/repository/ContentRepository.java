@@ -1,4 +1,4 @@
-package intra.poleemploi.dao;
+package intra.poleemploi.repository;
 
 import intra.poleemploi.entities.Content;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package intra.poleemploi.entities;
+package intra.poleemploi.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -9,8 +9,8 @@ import java.util.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class StatistiquesParJourDto implements Serializable {  //resourceSupport has been renamed ReprensentationModel
-    private Set<StatistiquesParJourDto> statistiquesParJourDtoSet = new HashSet<>();
 
+    private Set<StatistiquesParJourDto> statistiquesParJourDtoSet = new HashSet<>();
     private Long id;
     private String date;
     private Long nbAffichage;
