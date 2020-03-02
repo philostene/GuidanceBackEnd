@@ -1,7 +1,6 @@
 package intra.poleemploi.utility;
 
-import intra.poleemploi.Consts.Consts;
-import intra.poleemploi.entities.Appli;
+import intra.poleemploi.constants.Consts;
 import intra.poleemploi.entities.Content;
 import intra.poleemploi.entities.StatistiquesParJour;
 import org.apache.http.Header;

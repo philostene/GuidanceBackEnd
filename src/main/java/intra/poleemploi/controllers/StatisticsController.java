@@ -1,4 +1,4 @@
-package intra.poleemploi.web;
+package intra.poleemploi.controllers;
 
 import intra.poleemploi.repository.ContentRepository;
 import intra.poleemploi.repository.StatistiquesParJourRepository;

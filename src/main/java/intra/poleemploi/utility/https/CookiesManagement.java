@@ -1,4 +1,11 @@
 package intra.poleemploi.utility.https;
 
-public class CookiesManagment {
+import org.springframework.http.ResponseEntity;
+
+public class CookiesManagement {
+
+    public void cookieStoreStoreCookies(ResponseEntity<String> response){
+
+    }
+
 }

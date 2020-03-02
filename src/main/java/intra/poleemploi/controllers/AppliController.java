@@ -1,13 +1,11 @@
-package intra.poleemploi.web;
+package intra.poleemploi.controllers;
 
 import intra.poleemploi.dto.ApplicationDto;
-import intra.poleemploi.dto.StatistiquesParJourDto;
 import intra.poleemploi.entities.Appli;
 import intra.poleemploi.repository.AppliRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

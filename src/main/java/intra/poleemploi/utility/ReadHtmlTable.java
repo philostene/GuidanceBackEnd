@@ -2,7 +2,7 @@ package intra.poleemploi.utility;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import intra.poleemploi.Consts.ErrorMessage;
+import intra.poleemploi.constants.ErrorMessage;
 import intra.poleemploi.dto.ApplicationDto;
 import intra.poleemploi.dto.ContentDto;
 import intra.poleemploi.entities.*;

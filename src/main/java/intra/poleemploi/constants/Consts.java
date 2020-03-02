@@ -1,4 +1,4 @@
-package intra.poleemploi.Consts;
+package intra.poleemploi.constants;
 
 public final class Consts {
     public static final String ONCLICK ="onclick";

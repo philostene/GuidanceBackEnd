@@ -1,6 +1,6 @@
 package intra.poleemploi.utility.writingDatabaseElement;
 
-import intra.poleemploi.Consts.Consts;
+import intra.poleemploi.constants.Consts;
 import intra.poleemploi.dto.ApplicationDto;
 import intra.poleemploi.dto.ContentDto;
 import intra.poleemploi.repository.AppliRepository;

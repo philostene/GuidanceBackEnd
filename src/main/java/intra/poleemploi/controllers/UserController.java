@@ -1,6 +1,5 @@
-package intra.poleemploi.web;
+package intra.poleemploi.controllers;
 
-import intra.poleemploi.dto.StatistiquesParJourDto;
 import intra.poleemploi.repository.AppliRepository;
 import intra.poleemploi.repository.ContentRepository;
 import intra.poleemploi.repository.StatistiquesParJourRepository;
@@ -12,8 +11,6 @@ import intra.poleemploi.service.AuthService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
